@@ -9,7 +9,7 @@ namespace SortingApp
     {
         public string Name { get; set; }
         public decimal Time { get; set; }
-        public int Place { get; set; }
+        public int? Place { get; set; }
     }
 
     public class Program
@@ -36,7 +36,7 @@ namespace SortingApp
             AnsiConsole.MarkupLine("[white]Сначала идет ФИО, а затем через двоеточие результат проплыва в секундах.[/]\n");
         }
 
-        public static List<Participant> ReadParticipants(string filePath)
+        public static List<Participant>? ReadParticipants(string filePath)
         {
             try
             {
@@ -62,11 +62,11 @@ namespace SortingApp
             }
         }
 
-        public static List<Participant> SortParticipants(List<Participant> participants)
+        public static List<Participant>? SortParticipants(List<Participant>? participants)
         {
-            if (participants == null || !participants.Any())
+            if (participants == null || participants.Count == 0)
             {
-                return new List<Participant>();
+                return null;
             }
 
             // Сортируем участников по времени
@@ -74,19 +74,19 @@ namespace SortingApp
 
             // Присваиваем места участникам
             int currentPlace = 1;
-            for (int i = 0; i < sortedParticipants.Count; i++)
+            foreach (var participant in sortedParticipants)
             {
-                if (sortedParticipants[i].Place == 0 && sortedParticipants.Any(x => x.Time == sortedParticipants[i].Time && x.Name != sortedParticipants[i].Name))
+                if (participant.Place == null && sortedParticipants.Any(x => x.Time == participant.Time && x.Name != participant.Name))
                 {
-                    foreach (var sameParticipant in sortedParticipants.Where(x => x.Time == sortedParticipants[i]?.Time))
+                    foreach (var sameParticipant in sortedParticipants.Where(x => x.Time == participant.Time))
                     {
                         sameParticipant.Place = currentPlace;
                     }
                     currentPlace++;
                 }
-                else if (sortedParticipants[i].Place == 0)
+                else if (participant.Place == null)
                 {
-                    sortedParticipants[i].Place = currentPlace;
+                    participant.Place = currentPlace;
                     currentPlace++;
                 }
             }
@@ -94,9 +94,9 @@ namespace SortingApp
             return sortedParticipants;
         }
 
-        public static void PrintResults(List<Participant> participants)
+        public static void PrintResults(List<Participant>? participants)
         {
-            if (participants == null || !participants.Any())
+            if (participants == null || participants.Count == 0)
             {
                 AnsiConsole.MarkupLine("[red]Нет данных для отображения.[/]");
                 return;
@@ -113,7 +113,7 @@ namespace SortingApp
                 table.AddRow(
                     new Markup(participant.Name),
                     new Markup(participant.Time.ToString()),
-                    new Markup(participant.Place.ToString())
+                    new Markup(participant.Place.ToString()!)
                 );
             }
 

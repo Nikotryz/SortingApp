@@ -7,11 +7,11 @@ namespace SortingAppTests
         [Fact]
         public void Test_ReadParticipants_SimpleFile()
         {
-            // Подготовка данных для теста
+            // Подготовка данных
             var testData = @"Иванов Иван Иванович:10,2
                              Харламов Никита Владимирович:10,2";
 
-            // Создание временного файла с тестовыми данными
+            // Создание временного файла с данными
             var tempFilePath = Path.GetTempFileName();
             File.WriteAllText(tempFilePath, testData);
 
@@ -24,7 +24,7 @@ namespace SortingAppTests
             Assert.True(actualResult.Exists(x => x.Name == "Иванов Иван Иванович" && x.Time == 10.2m));
             Assert.True(actualResult.Exists(x => x.Name == "Харламов Никита Владимирович" && x.Time == 10.2m));
 
-            // Удаление временного файла после завершения теста
+            // Удаление временного файла
             File.Delete(tempFilePath);
         }
 
