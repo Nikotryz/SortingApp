@@ -24,6 +24,9 @@ namespace SortingApp
             var sortedParticipants = SortParticipants(participants);
 
             PrintResults(sortedParticipants);
+
+            AnsiConsole.MarkupLine("\n[white]Нажмите любую клавишу для закрытия.[/]");
+            Console.ReadLine();
         }
 
         public static void SendTemplate()
@@ -107,7 +110,7 @@ namespace SortingApp
             table.AddColumn(new TableColumn("Время").Centered());
             table.AddColumn(new TableColumn("Место").Centered());
 
-            AnsiConsole.MarkupLine("\n[lightgreen]Результаты:[/]\n");
+            AnsiConsole.MarkupLine("\n[lightgreen]Результаты:[/]");
             foreach (var participant in participants)
             {
                 table.AddRow(
